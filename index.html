@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 薄青 - 我的绩效面板</title>
     <!-- 引入datalabels插件（用于节点/柱子显示文字） -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
@@ -170,406 +170,97 @@
         .rank-table th {
             background: rgba(15,23,42,0.9);
         }
-    </style>
-</head>
-<body>
-    <div class="dashboard">
-        <header>
-            <div class="header-left">
-                <h1>🏆 薄青 - 我的绩效面板</h1>
-                <p>绩效数据来源：2025年4月 - 2026年2月</p>
-            </div>
-        </header>
-
-        <!-- 数据周期说明 -->
-        <div class="cycle-note">
-            <strong>数据周期说明：</strong><br>
-            因2025年1-3月绩效方案不完善，存在不公平机制，本人不认可，故仅选取<strong>2025年4月至2026年1月</strong>（共10个月）数据进行公平对比。
-        </div>
-
-        <!-- 英雄区 -->
-        <div class="hero">
-            <div class="hero-name">薄青</div>
-            <div class="hero-stats">
-                <div>
-                    <div class="stat-value">3.1</div>
-                    <div class="stat-label">月均积分 <span class="highlight">团队第2</span></div>
-                </div>
-                <div>
-                    <div class="stat-value">#2</div>
-                    <div class="stat-label">平均排名</div>
-                </div>
-            </div>
-            <div style="margin-top:28px; font-size:21px; font-weight:500;">
-                尽管有3个月特殊情况，我月均仍达<strong>3.1分</strong>，领先全队86.7%成员！冲刺第一仅差0.8分
-            </div>
-        </div>
-
-        <div class="grid">
-            <!-- 月度趋势 -->
-            <div class="card">
-                <h3>📈 我的绩效趋势（2025.4-2026.1）</h3>
-                <canvas id="monthlyChart"></canvas>
-            </div>
-            <!-- 平均积分对比 -->
-            <div class="card">
-                <h3>⚔️ 我的月均积分 vs 团队</h3>
-                <canvas id="compareChart"></canvas>
-            </div>
-        </div>
-
-        <!-- 月度特殊说明 -->
-        <div class="card">
-            <h3>📝 月度特殊说明（诚实标注）</h3>
-            <table class="explain-table">
-                <thead>
-                    <tr>
-                        <th>月份</th>
-                        <th>等级</th>
-                        <th>积分</th>
-                        <th>原因说明</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>7月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
-                    <tr><td>10月</td><td>B</td><td>2</td><td>因结束一段长期感情，需要时间进行心态调整</td></tr>
-                    <tr><td>11月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
-                </tbody>
-            </table>
-            <div style="margin-top:16px; font-size:15px; opacity:0.9;">
-                其余7个月均为B+及以上（含2次A+满分5分），整体表现依然强劲！
-            </div>
-        </div>
-
-        <!-- 优势亮点 -->
-        <div class="advantage">
-            <h3 style="margin:0 0 16px 0; color:#22d3ee;">🚀 我的核心优势（以平均积分衡量）</h3>
-            <ul style="margin:0; padding-left:20px;">
-                <li><strong>月均3.1分</strong> —— 全队第2，仅次于云雀（3.9），领先第3名0.1分</li>
-                <li><strong>稳定性极强</strong> —— 10个月中7个月≥3分（B+及以上），2次满分5分（A+）</li>
-                <li><strong>公平领先</strong> —— 对比同期入职同事，我月均依然领先</li>
-            </ul>
-            <div class="fair-note">
-                ⚠️ 说明：丛云、汤姆、自珩、钟源、琢光、行简等同事因入职较晚，总积分较低已不做对比，<strong>主要看平均每月积分</strong> 更公平！
-            </div>
-        </div>
-
-        <!-- 官方规则 -->
-        <div class="card">
-            <h3>📋 官方绩效积分规则</h3>
-            <table class="explain-table">
-                <thead><tr><th>绩效等级</th><th>对应积分</th></tr></thead>
-                <tbody>
-                    <tr><td>A+</td><td><strong>5</strong></td></tr>
-                    <tr><td>A</td><td><strong>4</strong></td></tr>
-                    <tr><td>B+</td><td><strong>3</strong></td></tr>
-                    <tr><td>B</td><td><strong>2</strong></td></tr>
-                    <tr><td>B-</td><td><strong>1</strong></td></tr>
-                    <tr><td>C</td><td><strong>0</strong></td></tr>
-                </tbody>
-            </table>
-            <p style="margin:12px 0 0 0; font-size:14px; text-align:center; opacity:0.85;">
-                我的总积分 = 3+3+5+2+3+3+2+2+3+5 = 31分（10个月）
-            </p>
-        </div>
-
-        <!-- 团队排行榜：修改表格class为rank-table，强制左对齐 -->
-        <div class="card">
-            <h3>🏅 团队平均积分排行（我已高亮）</h3>
-            <table class="rank-table">
-                <thead>
-                    <tr>
-                        <th>排名</th>
-                        <th>姓名</th>
-                        <th>平均每月积分</th>
-                        <th>月份数</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>云雀</td><td><strong>3.9</strong></td><td>10</td></tr>
-                    <tr class="me"><td>2</td><td><strong>薄青</strong></td><td><strong>3.1</strong></td><td>10</td></tr>
-                    <tr><td>3</td><td>自珩</td><td>3.0</td><td>8</td></tr>
-                    <tr><td>3</td><td>行简</td><td>3.0</td><td>5</td></tr>
-                    <tr><td>5</td><td>汤姆</td><td>2.88</td><td>8</td></tr>
-                    <tr><td>6</td><td>钟源</td><td>2.57</td><td>7</td></tr>
-                    <tr><td>7</td><td>玲玲</td><td>2.5</td><td>10</td></tr>
-                    <tr><td>8</td><td>琢光</td><td>2.29</td><td>7</td></tr>
-                    <tr><td>9</td><td>鱼腥草</td><td>2.1</td><td>10</td></tr>
-                    <tr><td>9</td><td>清子</td><td>2.1</td><td>10</td></tr>
-                    <tr><td>11</td><td>苦艾酒</td><td>2.0</td><td>10</td></tr>
-                    <tr><td>12</td><td>唯世</td><td>1.9</td><td>10</td></tr>
-                    <tr><td>13</td><td>崇仔</td><td>1.3</td><td>10</td></tr>
-                    <tr><td>14</td><td>丛云</td><td>1.13</td><td>8</td></tr>
-                    <tr><td>15</td><td>海明</td><td>0.9</td><td>10</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <script>
-        // 月度数据（官方积分）
-        const months = ['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月'];
-        const myGrades = ['B+','B+','A+','B','B+','B+','B','B','B+','A+'];
-        const myScores = [3,3,5,2,3,3,2,2,3,5];
-
-        // 注册datalabels插件
-        Chart.register(ChartDataLabels);
-        
-        // 折线图：月度积分趋势
-        new Chart(document.getElementById('monthlyChart'), {
-            type: 'line',
-            data: {
-                labels: months,
-                datasets: [{
-                    label: '我的积分',
-                    data: myScores,
-                    borderColor: '#22d3ee',
-                    backgroundColor: 'rgba(34,211,238,0.15)',
-                    tension: 0.4,
-                    borderWidth: 5,
-                    pointRadius: 7,
-                    pointBackgroundColor: '#fff'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: ctx => `${myGrades[ctx.dataIndex]} (${ctx.raw}分)`
-                        }
-                    },
-                    datalabels: {
-                        color: '#fff',
-                        font: { size: 12, weight: 'bold' },
-                        padding: { top: 5, bottom: 5, left: 5, right: 5 },
-                        formatter: (value, ctx) => myGrades[ctx.dataIndex],
-                        anchor: 'end',
-                        align: 'top'
-                    }
-                },
-                scales: {
-                    y: { 
-                        min: 0, 
-                        max: 6, 
-                        grid: { color: 'rgba(255,255,255,0.1)' }, 
-                        ticks: { color: '#94a3b8', stepSize: 1 } 
-                    },
-                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } }
-                }
-            }
-        });
-
-        // 柱状图：平均积分对比
-        new Chart(document.getElementById('compareChart'), {
-            type: 'bar',
-            data: {
-                labels: ['云雀', '薄青（我）', '团队平均'],
-                datasets: [{
-                    label: '平均每月积分',
-                    data: [3.9, 3.1, 2.3],
-                    backgroundColor: ['#64748b', '#22d3ee', '#64748b'],
-                    borderRadius: 12,
-                    barThickness: 65
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { 
-                    legend: { display: false },
-                    datalabels: {
-                        color: '#fff',
-                        font: { size: 16, weight: 'bold' },
-                        formatter: (value) => value,
-                        anchor: 'center',
-                        align: 'center'
-                    }
-                },
-                scales: {
-                    y: { 
-                        grid: { color: 'rgba(255,255,255,0.1)' }, 
-                        ticks: { color: '#94a3b8' },
-                        min: 0,
-                        max: 4.5
-                    },
-                    x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 16 } } }
-                }
-            }
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏆 薄青 - 我的绩效面板</title>
-    <!-- 引入datalabels插件（用于节点/柱子显示文字） -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
-            color: #e2e8f0;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+        /* 准确率相关样式 */
+        .accuracy-badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-left: 8px;
         }
-        .dashboard {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 20px;
+        .accuracy-card {
+            background: rgba(16, 185, 129, 0.1);
+            border: 2px solid #10b981;
         }
-        header {
-            background: linear-gradient(90deg, #22d3ee, #3b82f6);
-            color: #0f172a;
-            border-radius: 24px;
-            padding: 28px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.3);
+        .accuracy-highlight {
+            color: #10b981;
         }
-        .header-left h1 {
-            margin: 0;
-            font-size: 36px;
-            font-weight: 700;
+        .accuracy-title {
+            color: #10b981;
         }
-        .header-left p {
-            margin: 8px 0 0 0;
-            font-size: 18px;
-            opacity: 0.95;
+        .accuracy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
         }
-        .hero {
-            background: rgba(30, 41, 59, 0.85);
-            border-radius: 24px;
-            padding: 40px;
+        .accuracy-stat {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 12px;
+            padding: 16px;
             text-align: center;
-            margin-bottom: 32px;
-            border: 3px solid #22d3ee;
-            box-shadow: 0 20px 50px rgba(34, 211, 238, 0.2);
         }
-        .hero-name {
-            font-size: 48px;
+        .accuracy-stat-value {
+            font-size: 28px;
             font-weight: 700;
-            margin: 0;
-            background: linear-gradient(90deg, #22d3ee, #60a5fa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #10b981;
+            line-height: 1.2;
         }
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 80px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-        .stat-value {
-            font-size: 56px;
-            font-weight: 700;
-            line-height: 1;
-            color: #22d3ee;
-        }
-        .stat-label {
-            font-size: 17px;
+        .accuracy-stat-label {
+            font-size: 14px;
             opacity: 0.9;
             margin-top: 8px;
         }
-        .highlight {
-            color: #22d3ee;
-            font-weight: 600;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 24px;
+        .tab-container {
             margin-bottom: 32px;
         }
-        .card {
-            background: rgba(30, 41, 59, 0.8);
-            border-radius: 20px;
-            padding: 28px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-        .card h3 {
-            margin: 0 0 16px 0;
-            font-size: 18px;
+        .tabs {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        canvas { max-height: 320px; }
-        .advantage {
-            background: rgba(34, 211, 238, 0.1);
-            border-left: 6px solid #22d3ee;
-            padding: 24px;
-            border-radius: 0 16px 16px 0;
-            margin: 32px 0;
-            font-size: 16px;
-            line-height: 1.8;
-        }
-        .explain-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            overflow: hidden;
-        }
-        .explain-table th, .explain-table td {
-            padding: 14px 18px;
-            text-align: left; /* 保持原有表格左对齐 */
+            gap: 10px;
+            margin-bottom: 20px;
             border-bottom: 1px solid rgba(148,163,184,0.2);
         }
-        .explain-table th {
-            background: rgba(15,23,42,0.9);
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 12px 12px 0 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        .me { background: rgba(34, 211, 238, 0.15) !important; font-weight: 600; }
-        .fair-note {
-            font-size: 14px;
-            opacity: 0.85;
-            text-align: center;
-            margin: 16px 0 0 0;
-            padding: 12px;
-            background: rgba(234, 179, 8, 0.1);
-            border-radius: 12px;
-            border: 1px solid #eab308;
+        .tab.active {
+            background: rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
+            border-bottom: 3px solid #22d3ee;
         }
-        .cycle-note {
-            font-size: 15px;
-            opacity: 0.9;
-            background: rgba(234, 179, 8, 0.15);
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px solid #eab308;
-            margin-bottom: 32px;
+        .tab:hover:not(.active) {
+            background: rgba(148,163,184,0.1);
         }
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            opacity: 0.7;
-            font-size: 14px;
+        .tab-content {
+            display: none;
         }
-        /* 新增：团队排行榜表格样式，强制左对齐 */
-        .rank-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 12px;
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 12px;
-            overflow: hidden;
+        .tab-content.active {
+            display: block;
         }
-        .rank-table th, .rank-table td {
-            padding: 14px 18px;
-            text-align: left !important; /* 强制左对齐，优先级最高 */
-            border-bottom: 1px solid rgba(148,163,184,0.2);
+        .mico-badge {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-left: 8px;
         }
-        .rank-table th {
-            background: rgba(15,23,42,0.9);
+        .key-metric {
+            display: inline-block;
+            background: rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 0 8px;
         }
     </style>
 </head>
@@ -597,121 +288,364 @@
                     <div class="stat-label">月均积分 <span class="highlight">团队第2</span></div>
                 </div>
                 <div>
-                    <div class="stat-value">#2</div>
-                    <div class="stat-label">平均排名</div>
+                    <div class="stat-value">99.9773<span style="font-size:36px">%</span></div>
+                    <div class="stat-label">平均准确率 <span class="accuracy-highlight">团队第2</span></div>
                 </div>
             </div>
             <div style="margin-top:28px; font-size:21px; font-weight:500;">
-                尽管有3个月特殊情况，我月均仍达<strong>3.1分</strong>，领先全队86.7%成员！冲刺第一仅差0.8分
+                尽管有3个月特殊情况，我月均仍达<strong>3.1分</strong>，领先全队86.7%成员！
+                <span class="accuracy-highlight">准确率99.9773%，处于团队顶尖水平</span>
             </div>
         </div>
 
-        <div class="grid">
-            <!-- 月度趋势 -->
-            <div class="card">
-                <h3>📈 我的绩效趋势（2025.4-2026.1）</h3>
-                <canvas id="monthlyChart"></canvas>
+        <!-- 标签页导航 -->
+        <div class="tab-container">
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('performance')">绩效积分分析</div>
+                <div class="tab" onclick="switchTab('accuracy')">准确率分析</div>
+                <div class="tab" onclick="switchTab('comparison')">综合对比</div>
             </div>
-            <!-- 平均积分对比 -->
-            <div class="card">
-                <h3>⚔️ 我的月均积分 vs 团队</h3>
-                <canvas id="compareChart"></canvas>
+
+            <!-- 绩效积分分析标签页 -->
+            <div id="performance" class="tab-content active">
+                <div class="grid">
+                    <!-- 月度趋势 -->
+                    <div class="card">
+                        <h3>📈 我的绩效趋势（2025.4-2026.1）</h3>
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                    <!-- 平均积分对比 -->
+                    <div class="card">
+                        <h3>⚔️ 我的月均积分 vs 团队</h3>
+                        <canvas id="compareChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 月度特殊说明 -->
+                <div class="card">
+                    <h3>📝 月度特殊说明（诚实标注）</h3>
+                    <table class="explain-table">
+                        <thead>
+                            <tr>
+                                <th>月份</th>
+                                <th>等级</th>
+                                <th>积分</th>
+                                <th>原因说明</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>7月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
+                            <tr><td>10月</td><td>B</td><td>2</td><td>因结束一段长期感情，需要时间进行心态调整</td></tr>
+                            <tr><td>11月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top:16px; font-size:15px; opacity:0.9;">
+                        其余7个月均为B+及以上（含2次A+满分5分），整体表现依然强劲！
+                    </div>
+                </div>
+
+                <!-- 优势亮点 -->
+                <div class="advantage">
+                    <h3 style="margin:0 0 16px 0; color:#22d3ee;">🚀 我的核心优势（以平均积分衡量）</h3>
+                    <ul style="margin:0; padding-left:20px;">
+                        <li><strong>月均3.1分</strong> —— 全队第2，领先第3名0.1分</li>
+                        <li><strong>稳定性极强</strong> —— 10个月中7个月≥3分（B+及以上），2次满分5分（A+）</li>
+                        <li><strong>公平领先</strong> —— 对比同期入职同事，我月均依然领先</li>
+                    </ul>
+                    <div class="fair-note">
+                        ⚠️ 说明：丛云、汤姆、自珩、钟源、琢光、行简等同事因入职较晚，总积分较低已不做对比，<strong>主要看平均每月积分</strong> 更公平！
+                    </div>
+                </div>
+
+                <!-- 官方规则 -->
+                <div class="card">
+                    <h3>📋 官方绩效积分规则</h3>
+                    <table class="explain-table">
+                        <thead><tr><th>绩效等级</th><th>对应积分</th></tr></thead>
+                        <tbody>
+                            <tr><td>A+</td><td><strong>5</strong></td></tr>
+                            <tr><td>A</td><td><strong>4</strong></td></tr>
+                            <tr><td>B+</td><td><strong>3</strong></td></tr>
+                            <tr><td>B</td><td><strong>2</strong></td></tr>
+                            <tr><td>B-</td><td><strong>1</strong></td></tr>
+                            <tr><td>C</td><td><strong>0</strong></td></tr>
+                        </tbody>
+                    </table>
+                    <p style="margin:12px 0 0 0; font-size:14px; text-align:center; opacity:0.85;">
+                        我的总积分 = 3+3+5+2+3+3+2+2+3+5 = 31分（10个月）
+                    </p>
+                </div>
+
+                <!-- 团队排行榜 -->
+                <div class="card">
+                    <h3>🏅 团队平均积分排行（我已高亮）</h3>
+                    <table class="rank-table">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>姓名</th>
+                                <th>平均每月积分</th>
+                                <th>月份数</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>云雀</td><td><strong>3.9</strong></td><td>10</td></tr>
+                            <tr class="me"><td>2</td><td><strong>薄青</strong></td><td><strong>3.1</strong></td><td>10</td></tr>
+                            <tr><td>3</td><td>自珩</td><td>3.0</td><td>8</td></tr>
+                            <tr><td>3</td><td>行简</td><td>3.0</td><td>5</td></tr>
+                            <tr><td>5</td><td>汤姆</td><td>2.88</td><td>8</td></tr>
+                            <tr><td>6</td><td>钟源</td><td>2.57</td><td>7</td></tr>
+                            <tr><td>7</td><td>玲玲</td><td>2.5</td><td>10</td></tr>
+                            <tr><td>8</td><td>琢光</td><td>2.29</td><td>7</td></tr>
+                            <tr><td>9</td><td>鱼腥草</td><td>2.1</td><td>10</td></tr>
+                            <tr><td>9</td><td>清子</td><td>2.1</td><td>10</td></tr>
+                            <tr><td>11</td><td>苦艾酒</td><td>2.0</td><td>10</td></tr>
+                            <tr><td>12</td><td>唯世</td><td>1.9</td><td>10</td></tr>
+                            <tr><td>13</td><td>崇仔</td><td>1.3</td><td>10</td></tr>
+                            <tr><td>14</td><td>丛云</td><td>1.13</td><td>8</td></tr>
+                            <tr><td>15</td><td>海明</td><td>0.9</td><td>10</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 准确率分析标签页 -->
+            <div id="accuracy" class="tab-content">
+                <!-- 准确率概览卡片 -->
+                <div class="card accuracy-card">
+                    <h3 class="accuracy-title">🎯 我的准确率概览</h3>
+                    <div class="accuracy-grid">
+                        <div class="accuracy-stat">
+                            <div class="accuracy-stat-value">99.9773%</div>
+                            <div class="accuracy-stat-label">平均准确率</div>
+                        </div>
+                        <div class="accuracy-stat">
+                            <div class="accuracy-stat-value">#2</div>
+                            <div class="accuracy-stat-label">团队排名</div>
+                        </div>
+                        <div class="accuracy-stat">
+                            <div class="accuracy-stat-value">8/10</div>
+                            <div class="accuracy-stat-label">参与考核月份</div>
+                        </div>
+                        <div class="accuracy-stat">
+                            <div class="accuracy-stat-value">99.992%</div>
+                            <div class="accuracy-stat-label">最高准确率</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:24px; padding:16px; background:rgba(15,23,42,0.7); border-radius:12px;">
+                        <p style="margin:0 0 12px 0; font-weight:500;">
+                            我在参与考核的8个月中，准确率始终保持在<strong class="accuracy-highlight">99.95%以上</strong>，
+                            其中12月达到最高的<strong class="accuracy-highlight">99.992%</strong>，表现极为出色！
+                        </p>
+                        <p style="margin:0; font-size:14px; opacity:0.9;">
+                            7月和11月因负责MICO专项任务未参与准确率考核，10月虽心态调整但准确率仍达99.986%。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <!-- 月度准确率趋势 -->
+                    <div class="card">
+                        <h3>📊 我的月度准确率趋势</h3>
+                        <canvas id="accuracyTrendChart"></canvas>
+                    </div>
+                    <!-- 团队准确率排名 -->
+                    <div class="card">
+                        <h3>🏆 团队准确率排名（前10名）</h3>
+                        <canvas id="accuracyRankingChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 团队准确率详细排名 -->
+                <div class="card">
+                    <h3>📋 团队准确率详细排名</h3>
+                    <table class="rank-table">
+                        <thead>
+                            <tr>
+                                <th>排名</th>
+                                <th>姓名</th>
+                                <th>平均准确率</th>
+                                <th>与我的差距</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>云雀</td><td><strong>99.9818%</strong></td><td>-0.0045%</td></tr>
+                            <tr class="me"><td>2</td><td><strong>薄青</strong></td><td><strong>99.9773%</strong></td><td>基准线</td></tr>
+                            <tr><td>3</td><td>清子</td><td>99.9683%</td><td>+0.0090%</td></tr>
+                            <tr><td>4</td><td>鱼腥草</td><td>99.9668%</td><td>+0.0105%</td></tr>
+                            <tr><td>5</td><td>行简</td><td>99.9652%</td><td>+0.0121%</td></tr>
+                            <tr><td>6</td><td>唯世</td><td>99.9635%</td><td>+0.0138%</td></tr>
+                            <tr><td>7</td><td>苦艾酒</td><td>99.9561%</td><td>+0.0212%</td></tr>
+                            <tr><td>8</td><td>汤姆</td><td>99.9461%</td><td>+0.0312%</td></tr>
+                            <tr><td>9</td><td>自珩</td><td>99.9383%</td><td>+0.0390%</td></tr>
+                            <tr><td>10</td><td>玲玲</td><td>99.9381%</td><td>+0.0392%</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="fair-note">
+                        说明：负号表示该同事准确率高于我，正号表示我高于该同事
+                    </div>
+                </div>
+
+                <!-- 月度团队平均准确率 -->
+                <div class="card">
+                    <h3>📈 月度团队平均准确率趋势</h3>
+                    <canvas id="teamAccuracyTrendChart"></canvas>
+                    <div style="margin-top:16px; font-size:14px; opacity:0.9; text-align:center;">
+                        团队整体准确率表现优秀，10月达到最高的99.9622%
+                    </div>
+                </div>
+
+                <!-- 准确率分析总结 -->
+                <div class="advantage" style="border-left-color:#10b981;">
+                    <h3 style="margin:0 0 16px 0; color:#10b981;">🎯 准确率分析总结</h3>
+                    <ul style="margin:0; padding-left:20px;">
+                        <li><strong>表现卓越</strong> —— 平均准确率99.9773%，在15人团队中排名第2</li>
+                        <li><strong>稳定性极强</strong> —— 参与考核的8个月中，准确率全部保持在99.95%以上，波动极小</li>
+                        <li><strong>抗压能力强</strong> —— 10月虽有心态调整，但准确率仍高达99.986%，展现了极强的专业素养</li>
+                        <li><strong>专业专注</strong> —— 7月和11月负责MICO专项任务，体现了团队对我专业能力的认可</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 综合对比标签页 -->
+            <div id="comparison" class="tab-content">
+                <div class="card">
+                    <h3>📊 我的综合表现概览</h3>
+                    <div style="display:flex; justify-content:space-around; margin:30px 0; flex-wrap:wrap; gap:20px;">
+                        <div style="text-align:center;">
+                            <div style="font-size:48px; font-weight:700; color:#22d3ee;">3.1</div>
+                            <div style="font-size:16px; margin-top:8px;">月均积分</div>
+                            <div style="font-size:14px; opacity:0.8;">团队平均 2.3</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="font-size:48px; font-weight:700; color:#10b981;">99.9773%</div>
+                            <div style="font-size:16px; margin-top:8px;">平均准确率</div>
+                            <div style="font-size:14px; opacity:0.8;">团队平均 99.94%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid">
+                    <!-- 补充核心竞争力卡片 -->
+                    <div class="card">
+                        <h3>🌟 我的核心竞争力（纯数据）</h3>
+                        <div style="margin-top:20px; line-height:1.8; font-size:16px;">
+                            <p>✅ <strong>绩效表现</strong>：月均3.1分，团队排名第2，领先86.7%的团队成员</p>
+                            <p>✅ <strong>准确率</strong>：99.9773%，团队排名第2，始终保持在99.95%以上</p>
+                            <p>✅ <strong>综合能力</strong>：绩效和准确率双维度排名第2，是团队顶尖的双优成员</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 关键指标对比 -->
+                <div class="card">
+                    <h3>📋 团队关键成员纯数据对比分析</h3>
+                    <table class="explain-table">
+                        <thead>
+                            <tr>
+                                <th>姓名</th>
+                                <th>绩效积分排名</th>
+                                <th>准确率排名</th>
+                                <th>综合表现</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>云雀</td><td>1 (3.9分)</td><td>1 (99.9818%)</td><td>双料冠军</td></tr>
+                            <tr class="me"><td>薄青</td><td>2 (3.1分)</td><td>2 (99.9773%)</td><td>双料亚军</td></tr>
+                            <tr><td>自珩</td><td>3 (3.0分)</td><td>9 (99.9383%)</td><td>绩效突出</td></tr>
+                            <tr><td>清子</td><td>9 (2.1分)</td><td>3 (99.9683%)</td><td>准确率突出</td></tr>
+                            <tr><td>团队平均</td><td>- (2.3分)</td><td>- (99.94%)</td><td>基准线</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 综合优势分析 -->
+                <div class="advantage">
+                    <h3 style="margin:0 0 16px 0; color:#22d3ee;">🌟 我的综合优势分析（纯数据）</h3>
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+                        <div>
+                            <h4 style="margin:0 0 12px 0; color:#22d3ee;">📈 绩效表现优势</h4>
+                            <ul style="margin:0; padding-left:20px;">
+                                <li>月均3.1分，领先团队86.7%成员</li>
+                                <li>10个月中有7个月≥3分（B+及以上）</li>
+                                <li>2次获得A+满分5分，展现卓越能力</li>
+                                <li>特殊情况下仍保持专业水准</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin:0 0 12px 0; color:#10b981;">🎯 准确率优势</h4>
+                            <ul style="margin:0; padding-left:20px;">
+                                <li>平均准确率99.9773%，排名第2</li>
+                                <li>参与考核月份全部≥99.95%</li>
+                                <li>最高准确率达99.992%，接近完美</li>
+                                <li>心态调整期仍保持高准确率</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div style="margin-top:20px; padding:16px; background:rgba(15,23,42,0.7); border-radius:12px;">
+                        <p style="margin:0; font-weight:500;">
+                            <strong>核心结论（纯数据）：</strong>我在绩效积分和准确率两个关键维度都排名第2，是团队中<strong>综合能力最优</strong>的成员之一。
+                            这充分证明了我的<strong>专业能力</strong>、<strong>工作态度</strong>和<strong>抗压能力</strong>都处于团队顶尖水平！
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 月度特殊说明 -->
-        <div class="card">
-            <h3>📝 月度特殊说明（诚实标注）</h3>
-            <table class="explain-table">
-                <thead>
-                    <tr>
-                        <th>月份</th>
-                        <th>等级</th>
-                        <th>积分</th>
-                        <th>原因说明</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>7月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
-                    <tr><td>10月</td><td>B</td><td>2</td><td>因结束一段长期感情，需要时间进行心态调整</td></tr>
-                    <tr><td>11月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
-                </tbody>
-            </table>
-            <div style="margin-top:16px; font-size:15px; opacity:0.9;">
-                其余7个月均为B+及以上（含2次A+满分5分），整体表现依然强劲！
-            </div>
-        </div>
-
-        <!-- 优势亮点 -->
-        <div class="advantage">
-            <h3 style="margin:0 0 16px 0; color:#22d3ee;">🚀 我的核心优势（以平均积分衡量）</h3>
-            <ul style="margin:0; padding-left:20px;">
-                <li><strong>月均3.1分</strong> —— 全队第2，仅次于云雀（3.9），领先第3名0.1分</li>
-                <li><strong>稳定性极强</strong> —— 10个月中7个月≥3分（B+及以上），2次满分5分（A+）</li>
-                <li><strong>公平领先</strong> —— 对比同期入职同事，我月均依然领先</li>
-            </ul>
-            <div class="fair-note">
-                ⚠️ 说明：丛云、汤姆、自珩、钟源、琢光、行简等同事因入职较晚，总积分较低已不做对比，<strong>主要看平均每月积分</strong> 更公平！
-            </div>
-        </div>
-
-        <!-- 官方规则 -->
-        <div class="card">
-            <h3>📋 官方绩效积分规则</h3>
-            <table class="explain-table">
-                <thead><tr><th>绩效等级</th><th>对应积分</th></tr></thead>
-                <tbody>
-                    <tr><td>A+</td><td><strong>5</strong></td></tr>
-                    <tr><td>A</td><td><strong>4</strong></td></tr>
-                    <tr><td>B+</td><td><strong>3</strong></td></tr>
-                    <tr><td>B</td><td><strong>2</strong></td></tr>
-                    <tr><td>B-</td><td><strong>1</strong></td></tr>
-                    <tr><td>C</td><td><strong>0</strong></td></tr>
-                </tbody>
-            </table>
-            <p style="margin:12px 0 0 0; font-size:14px; text-align:center; opacity:0.85;">
-                我的总积分 = 3+3+5+2+3+3+2+2+3+5 = 31分（10个月）
-            </p>
-        </div>
-
-        <!-- 团队排行榜：修改表格class为rank-table，强制左对齐 -->
-        <div class="card">
-            <h3>🏅 团队平均积分排行（我已高亮）</h3>
-            <table class="rank-table">
-                <thead>
-                    <tr>
-                        <th>排名</th>
-                        <th>姓名</th>
-                        <th>平均每月积分</th>
-                        <th>月份数</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td>1</td><td>云雀</td><td><strong>3.9</strong></td><td>10</td></tr>
-                    <tr class="me"><td>2</td><td><strong>薄青</strong></td><td><strong>3.1</strong></td><td>10</td></tr>
-                    <tr><td>3</td><td>自珩</td><td>3.0</td><td>8</td></tr>
-                    <tr><td>3</td><td>行简</td><td>3.0</td><td>5</td></tr>
-                    <tr><td>5</td><td>汤姆</td><td>2.88</td><td>8</td></tr>
-                    <tr><td>6</td><td>钟源</td><td>2.57</td><td>7</td></tr>
-                    <tr><td>7</td><td>玲玲</td><td>2.5</td><td>10</td></tr>
-                    <tr><td>8</td><td>琢光</td><td>2.29</td><td>7</td></tr>
-                    <tr><td>9</td><td>鱼腥草</td><td>2.1</td><td>10</td></tr>
-                    <tr><td>9</td><td>清子</td><td>2.1</td><td>10</td></tr>
-                    <tr><td>11</td><td>苦艾酒</td><td>2.0</td><td>10</td></tr>
-                    <tr><td>12</td><td>唯世</td><td>1.9</td><td>10</td></tr>
-                    <tr><td>13</td><td>崇仔</td><td>1.3</td><td>10</td></tr>
-                    <tr><td>14</td><td>丛云</td><td>1.13</td><td>8</td></tr>
-                    <tr><td>15</td><td>海明</td><td>0.9</td><td>10</td></tr>
-                </tbody>
-            </table>
-        </div>
+        <footer>
+            <p>© 2026 薄青 - 个人绩效面板 | 数据更新时间：2026年2月</p>
+        </footer>
     </div>
 
     <script>
+        // 标签页切换功能
+        function switchTab(tabId) {
+            // 隐藏所有标签内容
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 移除所有标签的active类
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // 显示选中的标签内容
+            document.getElementById(tabId).classList.add('active');
+            
+            // 为选中的标签添加active类
+            event.currentTarget.classList.add('active');
+        }
+
         // 月度数据（官方积分）
         const months = ['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月'];
         const myGrades = ['B+','B+','A+','B','B+','B+','B','B','B+','A+'];
         const myScores = [3,3,5,2,3,3,2,2,3,5];
+
+        // 准确率数据
+        const boqingAccuracyData = {
+            months: ['4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月'],
+            scores: [99.99, 99.95, 99.972, null, 99.98, 99.981, 99.986, null, 99.992, 99.967],
+            status: ['正常', '正常', '正常', 'MICO', '正常', '正常', '正常', 'MICO', '正常', '正常']
+        };
+
+        const teamRankingData = [
+            {rank: 1, name: '云雀', accuracy: 99.9818},
+            {rank: 2, name: '薄青', accuracy: 99.9773},
+            {rank: 3, name: '清子', accuracy: 99.9683},
+            {rank: 4, name: '鱼腥草', accuracy: 99.9668},
+            {rank: 5, name: '行简', accuracy: 99.9652},
+            {rank: 6, name: '唯世', accuracy: 99.9635},
+            {rank: 7, name: '苦艾酒', accuracy: 99.9561},
+            {rank: 8, name: '汤姆', accuracy: 99.9461},
+            {rank: 9, name: '自珩', accuracy: 99.9383},
+            {rank: 10, name: '玲玲', accuracy: 99.9381}
+        ];
+
+        const monthlyTeamAccuracy = {
+            months: ['4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月', '1月'],
+            averages: [99.9167, 99.9091, 99.9048, 99.9458, 99.9547, 99.9534, 99.9622, 99.9459, 99.9599, 99.9126]
+        };
 
         // 注册datalabels插件
         Chart.register(ChartDataLabels);
@@ -762,15 +696,15 @@
             }
         });
 
-        // 柱状图：平均积分对比
+        // 柱状图：平均积分对比（仅我和团队）
         new Chart(document.getElementById('compareChart'), {
             type: 'bar',
             data: {
-                labels: ['云雀', '薄青（我）', '团队平均'],
+                labels: ['薄青（我）', '团队平均'],
                 datasets: [{
                     label: '平均每月积分',
-                    data: [3.9, 3.1, 2.3],
-                    backgroundColor: ['#64748b', '#22d3ee', '#64748b'],
+                    data: [3.1, 2.3],
+                    backgroundColor: ['#22d3ee', '#64748b'],
                     borderRadius: 12,
                     barThickness: 65
                 }]
@@ -795,6 +729,174 @@
                         max: 4.5
                     },
                     x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 16 } } }
+                }
+            }
+        });
+
+        // 准确率趋势图
+        new Chart(document.getElementById('accuracyTrendChart'), {
+            type: 'line',
+            data: {
+                labels: boqingAccuracyData.months,
+                datasets: [{
+                    label: '我的准确率',
+                    data: boqingAccuracyData.scores,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                    tension: 0.4,
+                    borderWidth: 5,
+                    pointRadius: 7,
+                    pointBackgroundColor: boqingAccuracyData.scores.map((score, i) => 
+                        boqingAccuracyData.status[i] === 'MICO' ? '#f59e0b' : '#fff'
+                    ),
+                    pointBorderColor: boqingAccuracyData.scores.map((score, i) => 
+                        boqingAccuracyData.status[i] === 'MICO' ? '#f59e0b' : '#10b981'
+                    ),
+                    spanGaps: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const status = boqingAccuracyData.status[ctx.dataIndex];
+                                if (status === 'MICO') {
+                                    return `MICO专项任务，未参与考核`;
+                                }
+                                return `准确率: ${ctx.raw.toFixed(4)}%`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { size: 11, weight: 'bold' },
+                        formatter: (value, ctx) => {
+                            const status = boqingAccuracyData.status[ctx.dataIndex];
+                            if (status === 'MICO') {
+                                return 'MICO';
+                            }
+                            return value.toFixed(3) + '%';
+                        },
+                        anchor: 'end',
+                        align: 'top'
+                    }
+                },
+                scales: {
+                    y: { 
+                        min: 99.9, 
+                        max: 100, 
+                        grid: { color: 'rgba(255,255,255,0.1)' }, 
+                        ticks: { 
+                            color: '#94a3b8',
+                            callback: function(value) {
+                                return value.toFixed(2) + '%';
+                            }
+                        } 
+                    },
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+
+        // 团队准确率排名柱状图
+        new Chart(document.getElementById('accuracyRankingChart'), {
+            type: 'bar',
+            data: {
+                labels: teamRankingData.map(item => item.name),
+                datasets: [{
+                    label: '平均准确率',
+                    data: teamRankingData.map(item => item.accuracy),
+                    backgroundColor: teamRankingData.map(item => 
+                        item.name === '薄青' ? '#10b981' : '#64748b'
+                    ),
+                    borderRadius: 8,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { 
+                    legend: { display: false },
+                    datalabels: {
+                        color: '#fff',
+                        font: { size: 10, weight: 'bold' },
+                        formatter: (value) => value.toFixed(3) + '%',
+                        anchor: 'center',
+                        align: 'center'
+                    }
+                },
+                scales: {
+                    y: { 
+                        min: 99.9, 
+                        max: 100, 
+                        grid: { color: 'rgba(255,255,255,0.1)' }, 
+                        ticks: { 
+                            color: '#94a3b8',
+                            callback: function(value) {
+                                return value.toFixed(2) + '%';
+                            }
+                        } 
+                    },
+                    x: { 
+                        grid: { display: false }, 
+                        ticks: { 
+                            color: '#94a3b8',
+                            font: { size: 12 }
+                        } 
+                    }
+                }
+            }
+        });
+
+        // 团队月度平均准确率趋势
+        new Chart(document.getElementById('teamAccuracyTrendChart'), {
+            type: 'line',
+            data: {
+                labels: monthlyTeamAccuracy.months,
+                datasets: [{
+                    label: '团队平均准确率',
+                    data: monthlyTeamAccuracy.averages,
+                    borderColor: '#8b5cf6',
+                    backgroundColor: 'rgba(139, 92, 246, 0.15)',
+                    tension: 0.4,
+                    borderWidth: 4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => `团队平均准确率: ${ctx.raw.toFixed(4)}%`
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { size: 11, weight: 'bold' },
+                        formatter: (value) => value.toFixed(3) + '%',
+                        anchor: 'end',
+                        align: 'top'
+                    }
+                },
+                scales: {
+                    y: { 
+                        min: 99.9, 
+                        max: 100, 
+                        grid: { color: 'rgba(255,255,255,0.1)' }, 
+                        ticks: { 
+                            color: '#94a3b8',
+                            callback: function(value) {
+                                return value.toFixed(2) + '%';
+                            }
+                        } 
+                    },
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } }
                 }
             }
         });
