@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏆 薄青 - 我的绩效面板</title>
+    <!-- 引入datalabels插件（用于节点/柱子显示文字） -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
         body {
@@ -189,7 +191,7 @@
         <div class="grid">
             <!-- 月度趋势 -->
             <div class="card">
-                <h3>📈 我的月度积分趋势（官方规则）</h3>
+                <h3>📈 我的绩效趋势（2025.4-2026.1）</h3>
                 <canvas id="monthlyChart"></canvas>
             </div>
             <!-- 平均积分对比 -->
@@ -293,6 +295,10 @@
         const myGrades = ['B+','B+','A+','B','B+','B+','B','B','B+','A+'];
         const myScores = [3,3,5,2,3,3,2,2,3,5];
 
+        // 注册datalabels插件
+        Chart.register(ChartDataLabels);
+        
+        // 折线图：月度积分趋势
         new Chart(document.getElementById('monthlyChart'), {
             type: 'line',
             data: {
@@ -316,16 +322,29 @@
                         callbacks: {
                             label: ctx => `${myGrades[ctx.dataIndex]} (${ctx.raw}分)`
                         }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { size: 12, weight: 'bold' },
+                        padding: { top: 5, bottom: 5, left: 5, right: 5 },
+                        formatter: (value, ctx) => myGrades[ctx.dataIndex],
+                        anchor: 'end',
+                        align: 'top'
                     }
                 },
                 scales: {
-                    y: { min: 0, max: 5, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8', stepSize: 1 } },
+                    y: { 
+                        min: 0, 
+                        max: 6, 
+                        grid: { color: 'rgba(255,255,255,0.1)' }, 
+                        ticks: { color: '#94a3b8', stepSize: 1 } 
+                    },
                     x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } }
                 }
             }
         });
 
-        // 平均积分对比图
+        // 柱状图：平均积分对比（核心修改：添加datalabels配置）
         new Chart(document.getElementById('compareChart'), {
             type: 'bar',
             data: {
@@ -340,9 +359,30 @@
             },
             options: {
                 responsive: true,
-                plugins: { legend: { display: false } },
+                plugins: { 
+                    legend: { display: false },
+                    // 新增：柱状图的datalabels配置
+                    datalabels: {
+                        color: '#fff', // 文字颜色设为白色
+                        font: {
+                            size: 16, // 字体大小（可根据需要调整）
+                            weight: 'bold' // 字体加粗
+                        },
+                        // 显示柱子对应的数值（3.9/3.1/2.3）
+                        formatter: (value) => value,
+                        // 数值显示在柱子中间
+                        anchor: 'center',
+                        align: 'center'
+                    }
+                },
                 scales: {
-                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } },
+                    y: { 
+                        grid: { color: 'rgba(255,255,255,0.1)' }, 
+                        ticks: { color: '#94a3b8' },
+                        // 柱状图纵坐标也拉长一点，避免数值贴顶
+                        min: 0,
+                        max: 4.5
+                    },
                     x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 16 } } }
                 }
             }
