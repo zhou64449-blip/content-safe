@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 薄青 - 我的绩效面板</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .dashboard {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: linear-gradient(90deg, #22d3ee, #3b82f6);
+            color: #0f172a;
+            border-radius: 24px;
+            padding: 28px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            box-shadow: 0 15px 40px rgba(34, 211, 238, 0.3);
+        }
+        .header-left h1 {
+            margin: 0;
+            font-size: 36px;
+            font-weight: 700;
+        }
+        .header-left p {
+            margin: 8px 0 0 0;
+            font-size: 18px;
+            opacity: 0.95;
+        }
+        .hero {
+            background: rgba(30, 41, 59, 0.85);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 32px;
+            border: 3px solid #22d3ee;
+            box-shadow: 0 20px 50px rgba(34, 211, 238, 0.2);
+        }
+        .hero-name {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(90deg, #22d3ee, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 80px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        .stat-value {
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1;
+            color: #22d3ee;
+        }
+        .stat-label {
+            font-size: 17px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        .highlight {
+            color: #22d3ee;
+            font-weight: 600;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: rgba(30, 41, 59, 0.8);
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .card h3 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        canvas { max-height: 320px; }
+        .advantage {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 6px solid #22d3ee;
+            padding: 24px;
+            border-radius: 0 16px 16px 0;
+            margin: 32px 0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        .explain-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .explain-table th, .explain-table td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(148,163,184,0.2);
+        }
+        .explain-table th {
+            background: rgba(15,23,42,0.9);
+        }
+        .me { background: rgba(34, 211, 238, 0.15) !important; font-weight: 600; }
+        .fair-note {
+            font-size: 14px;
+            opacity: 0.85;
+            text-align: center;
+            margin: 16px 0 0 0;
+            padding: 12px;
+            background: rgba(234, 179, 8, 0.1);
+            border-radius: 12px;
+            border: 1px solid #eab308;
+        }
+        .cycle-note {
+            font-size: 15px;
+            opacity: 0.9;
+            background: rgba(234, 179, 8, 0.15);
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #eab308;
+            margin-bottom: 32px;
+        }
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            opacity: 0.7;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <div class="header-left">
+                <h1>🏆 薄青 - 我的绩效面板</h1>
+                <p>绩效数据来源：2025年4月 - 2026年2月</p>
+            </div>
+        </header>
+
+        <!-- 数据周期说明 -->
+        <div class="cycle-note">
+            <strong>数据周期说明：</strong><br>
+            因2025年1-3月绩效方案不完善，存在不公平机制，本人不认可，故仅选取<strong>2025年4月至2026年1月</strong>（共10个月）数据进行公平对比。
+        </div>
+
+        <!-- 英雄区 -->
+        <div class="hero">
+            <div class="hero-name">薄青</div>
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-value">3.1</div>
+                    <div class="stat-label">月均积分 <span class="highlight">团队第2</span></div>
+                </div>
+                <div>
+                    <div class="stat-value">#2</div>
+                    <div class="stat-label">平均排名</div>
+                </div>
+            </div>
+            <div style="margin-top:28px; font-size:21px; font-weight:500;">
+                尽管有3个月特殊情况，我月均仍达<strong>3.1分</strong>，领先全队86.7%成员！冲刺第一仅差0.8分
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- 月度趋势 -->
+            <div class="card">
+                <h3>📈 我的月度积分趋势（官方规则）</h3>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+            <!-- 平均积分对比 -->
+            <div class="card">
+                <h3>⚔️ 我的月均积分 vs 团队</h3>
+                <canvas id="compareChart"></canvas>
+            </div>
+        </div>
+
+        <!-- 月度特殊说明 -->
+        <div class="card">
+            <h3>📝 月度特殊说明（诚实标注）</h3>
+            <table class="explain-table">
+                <thead>
+                    <tr>
+                        <th>月份</th>
+                        <th>等级</th>
+                        <th>积分</th>
+                        <th>原因说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>7月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
+                    <tr><td>10月</td><td>B</td><td>2</td><td>因结束一段长期感情，需要时间进行心态调整</td></tr>
+                    <tr><td>11月</td><td>B</td><td>2</td><td>负责Mico专项任务，绩效固定为B</td></tr>
+                </tbody>
+            </table>
+            <div style="margin-top:16px; font-size:15px; opacity:0.9;">
+                其余7个月均为B+及以上（含2次A+满分5分），整体表现依然强劲！
+            </div>
+        </div>
+
+        <!-- 优势亮点 -->
+        <div class="advantage">
+            <h3 style="margin:0 0 16px 0; color:#22d3ee;">🚀 我的核心优势（以平均积分衡量）</h3>
+            <ul style="margin:0; padding-left:20px;">
+                <li><strong>月均3.1分</strong> —— 全队第2，仅次于云雀（3.9），领先第3名0.1分</li>
+                <li><strong>稳定性极强</strong> —— 10个月中7个月≥3分（B+及以上），2次满分5分</li>
+                <li><strong>公平领先</strong> —— 对比同期入职同事，我月均依然领先</li>
+            </ul>
+            <div class="fair-note">
+                ⚠️ 说明：丛云、汤姆、自珩、钟源、琢光、行简等同事因入职较晚，总积分较低已不做对比，<strong>主要看平均每月积分</strong> 更公平！
+            </div>
+        </div>
+
+        <!-- 官方规则 -->
+        <div class="card">
+            <h3>📋 官方绩效积分规则</h3>
+            <table class="explain-table">
+                <thead><tr><th>绩效等级</th><th>对应积分</th></tr></thead>
+                <tbody>
+                    <tr><td>A+</td><td><strong>5</strong></td></tr>
+                    <tr><td>A</td><td><strong>4</strong></td></tr>
+                    <tr><td>B+</td><td><strong>3</strong></td></tr>
+                    <tr><td>B</td><td><strong>2</strong></td></tr>
+                    <tr><td>B-</td><td><strong>1</strong></td></tr>
+                    <tr><td>C</td><td><strong>0</strong></td></tr>
+                </tbody>
+            </table>
+            <p style="margin:12px 0 0 0; font-size:14px; text-align:center; opacity:0.85;">
+                我的总积分 = 3+3+5+2+3+3+2+2+3+5 = 31分（10个月）
+            </p>
+        </div>
+
+        <!-- 团队排行榜 -->
+        <div class="card">
+            <h3>🏅 团队平均积分排行（我已高亮）</h3>
+            <table style="width:100%; border-collapse:collapse; margin-top:12px;">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>姓名</th>
+                        <th>平均每月积分</th>
+                        <th>月份数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>云雀</td><td><strong>3.9</strong></td><td>10</td></tr>
+                    <tr class="me"><td>2</td><td><strong>薄青</strong></td><td><strong>3.1</strong></td><td>10</td></tr>
+                    <tr><td>3</td><td>自珩</td><td>3.0</td><td>8</td></tr>
+                    <tr><td>3</td><td>行简</td><td>3.0</td><td>5</td></tr>
+                    <tr><td>5</td><td>汤姆</td><td>2.88</td><td>8</td></tr>
+                    <tr><td>6</td><td>钟源</td><td>2.57</td><td>7</td></tr>
+                    <tr><td>7</td><td>玲玲</td><td>2.5</td><td>10</td></tr>
+                    <tr><td>8</td><td>琢光</td><td>2.29</td><td>7</td></tr>
+                    <tr><td>9</td><td>鱼腥草</td><td>2.1</td><td>10</td></tr>
+                    <tr><td>9</td><td>清子</td><td>2.1</td><td>10</td></tr>
+                    <tr><td>11</td><td>苦艾酒</td><td>2.0</td><td>10</td></tr>
+                    <tr><td>12</td><td>唯世</td><td>1.9</td><td>10</td></tr>
+                    <tr><td>13</td><td>崇仔</td><td>1.3</td><td>10</td></tr>
+                    <tr><td>14</td><td>丛云</td><td>1.13</td><td>8</td></tr>
+                    <tr><td>15</td><td>海明</td><td>0.9</td><td>10</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 月度数据（官方积分）
+        const months = ['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月'];
+        const myGrades = ['B+','B+','A+','B','B+','B+','B','B','B+','A+'];
+        const myScores = [3,3,5,2,3,3,2,2,3,5];
+
+        new Chart(document.getElementById('monthlyChart'), {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: '我的积分',
+                    data: myScores,
+                    borderColor: '#22d3ee',
+                    backgroundColor: 'rgba(34,211,238,0.15)',
+                    tension: 0.4,
+                    borderWidth: 5,
+                    pointRadius: 7,
+                    pointBackgroundColor: '#fff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => `${myGrades[ctx.dataIndex]} (${ctx.raw}分)`
+                        }
+                    }
+                },
+                scales: {
+                    y: { min: 0, max: 5, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8', stepSize: 1 } },
+                    x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+
+        // 平均积分对比图
+        new Chart(document.getElementById('compareChart'), {
+            type: 'bar',
+            data: {
+                labels: ['云雀', '薄青（我）', '团队平均'],
+                datasets: [{
+                    label: '平均每月积分',
+                    data: [3.9, 3.1, 2.3],
+                    backgroundColor: ['#64748b', '#22d3ee', '#64748b'],
+                    borderRadius: 12,
+                    barThickness: 65
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 16 } } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
